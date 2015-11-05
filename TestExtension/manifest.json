@@ -17,6 +17,7 @@
                 "https://*/*"
             ],
             "js": [
+				"scripts/av-mini-0.6.4.js",
                 "scripts/test.js"
             ],
             "run_at": "document_end",
