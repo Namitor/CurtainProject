@@ -1,35 +1,33 @@
 {
   "manifest_version": 2,
-
-  "name": "Getting started example",
+  "name": "ProjectCurtain",
   "description": "This extension shows a Google Image search result for the current page",
   "version": "1.0",
-
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html",
-	"default_title": "点我！"
+    "default_title": "点我！"
   },
   "content_scripts": [
-        {
-            "matches": [
-                "http://*/*",
-                "https://*/*"
-            ],
-            "js": [
-				"scripts/av-mini-0.6.4.js",
-                "scripts/test.js"
-            ],
-            "run_at": "document_end",
-            "all_frames": false
-        }
-    ],
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "scripts/jquery-min1.11.3.js",
+        "scripts/test.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
   "permissions": [
-	"tabs",
+    "tabs",
     "http://*/*",
     "https://*/*"
   ],
   "web_accessible_resources": [
-      "imgs/2333.jpg"
-    ]
+    "imgs/2333.jpg"
+  ]
 }
