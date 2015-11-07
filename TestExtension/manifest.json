@@ -15,10 +15,10 @@
         "https://*/*"
       ],
       "js": [
-        "scripts/jquery-min1.11.3.js",
-        "scripts/test.js"
+        "scripts/jquery-2.1.4.js",
+        "scripts/shooters.js"
       ],
-      "run_at": "document_idle",
+      "run_at": "document_end",
       "all_frames": false
     }
   ],
