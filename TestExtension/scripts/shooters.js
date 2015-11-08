@@ -1,16 +1,4 @@
-﻿//AV.initialize('hG9GaSHPU0TRVt9PLfddF4vG', 'PYS0BJpBOafFEtDPjdtsoXF1');
-//
-//var TestObject = AV.Object.extend('TestObject');
-//var testObject = new TestObject();
-//testObject.save({
-//    foo: 'bar'
-//}, {
-//    success: function (object) {
-//        alert('LeanCloud works!');
-//    }
-//});
-
-function sleep(numberMillis) {
+﻿function sleep(numberMillis) {
     var now = new Date();
     var exitTime = now.getTime() + numberMillis;
     while (true) {
@@ -22,23 +10,31 @@ function sleep(numberMillis) {
 //
 
 function shoot_bullet(start_right, start_top, content, total_time) {
+    //$('body').css({overflow: 'hidden'});
     var temp_time = new Date().getTime();
-    $("body").append("<div id = 'bullet" + temp_time
-        + "' style='background: red;font-size: 150%;position:fixed;right:" + start_right + "px;top:"
-        + start_top + "px'>" + content + "</div>");
-    //var bullet = document.createElement("span");
-    //bullet.setAttribute("id", "bullet");
-    //alert($(body).attr('width'));
-    console.log($("#bullet" + temp_time) + 'created');
-    //for(var i =0;i<speed;i++){
-    //    $("#bullet" + temp_time).attr("style.right",i*20+start_right+"px")
-    //}
-    $("#bullet" + temp_time).animate({right: 2000 + "px"}, total_time, function () {
-        this.remove();
-        console.log(this, "remove")
+    $("body").append("<div id='bullet" + temp_time + "'>" + content + "</div>");
+    var bullet = $("#bullet" + temp_time);
+    bullet.css({
+        'font-size': '40px',
+        overflow: 'hidden',
+        height: '40px',
+        top: start_top,
+        position: 'fixed',
+        left: window.innerWidth - start_right,
+        color: '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16)
     });
-    console.log($("#bullet" + temp_time) + "animated");
+    console.log("before animate====" + bullet.css('left'));
+    console.log(-bullet.width());
+    bullet.animate({left: -$(this).width()}, total_time, "linear", function () {
+        console.log($(this), 'remove');
+        $(this).remove();
+    });
+    console.log(bullet + "animated");
 }
 
-setTimeout("shoot_bullet(-100, 200, '测试文本1', 8000)", 500);//延迟500ms执行该语句
-setTimeout("shoot_bullet(-100, 150, '啊哈哈哈哈打算放大维纳斯达芙妮撒旦法到哪里可忘记了空位了空间啊蝶恋蜂狂就', 8000)",100);
+function machine_gun(bullets) {
+
+}
+
+setTimeout("shoot_bullet(-100,100, '测试文本1', 8000)", 0);//延迟500ms执行该语句
+setTimeout("shoot_bullet(-100,200, '啊哈哈哈哈打算放大维纳斯达芙妮撒旦法到哪里可忘记了空位了空间啊蝶恋蜂狂就', 8000)", 1000);
