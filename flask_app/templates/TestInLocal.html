@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Test In Loacal</title>
+    <script src="./static/jquery-min1.11.3.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#postBtn").click(function () {
+                var curTime = new Date().getTime()
+                $.post("/getData", {
+                            page: "testPage",
+                            preTime: curTime-10000,
+                            curTime: curTime
+                        },
+                        function (data, status) {
+                            var jsonroot = JSON.parse(data)
+                            for (var i = 0; i < jsonroot.contents.length; i++) {
+                                var text = $("<p></p>")
+                                $("body").append(text)
+                                $(text).text(jsonroot.contents[i].content)
+                            }
+                        })
+            })
+            $("#shootBtn").click(function () {
+                $.post("/postBullet", {
+                            page: "testPage",
+                            time: new Date().getTime(),
+                            content:$("#bullet").val()
+                        },
+                        function (data, status) {
+                            alert(status)
+                        })
+            })
+        })
+    </script>
+</head>
+<body>
+<p><button id="postBtn">test post</button></p>
+<input id="bullet" type="text" size="80">
+<button id="shootBtn">
+    shoot
+</button>
+</body>
+</html>

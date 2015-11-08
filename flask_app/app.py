@@ -13,7 +13,7 @@ CORS(app)
 
 @app.route('/', methods=['GET'])
 def test_demo():
-    return render_template('test_index.html')
+    return render_template('TestInLocal.html')
 
 
 def get_content(page, pre_time, cur_time):
