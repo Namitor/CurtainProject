@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Test In Loacal</title>
+    <script src="./static/jquery-min1.11.3.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#postBtn").click(function () {
+                $.post("http://127.0.0.1:2222/testPost", {
+                            page: "testPage",
+                            time: 1234
+                        },
+                        function (data, status) {
+                            for (var i = 0; i < data.contents.length; i++) {
+                                var text = $("<p></p>")
+                                $("body").append(text)
+                                $(text).text(data.contents[i].content)
+                            }
+                        })
+            })
+        })
+    </script>
+</head>
+<body>
+<button id="postBtn">test post</button>
+</body>
+</html>
