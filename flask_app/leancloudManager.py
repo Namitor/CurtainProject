@@ -28,9 +28,10 @@ def query_data(page, user_id, cur_time):
     query.equal_to('page', page)
     query.greater_than('time', last_post_time)
     query.less_than('time', cur_time)
+    query.ascending('time')
     results = query.find()
     for result in results:
-        data.append({'content': result.get('content'), 'time_stamp': result.get('time')})
+        data.append({'content': result.get('content'), 'timestamp': result.get('time')})
     return data
 
 

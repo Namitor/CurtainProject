@@ -1,2 +1,5 @@
-flask
+leancloud-sdk
+Flask>=0.10.1
+ndg-httpsclient
+pyasn1
 flask-cors
