@@ -7,7 +7,6 @@ from requests.packages import urllib3
 def leancloud_init():
     urllib3.disable_warnings()
     leancloud.init('lXyQBue2G2I80NX9OIFY7TRk', 'NkLOGPRHeVrFdJOQiDIGVGJ7')
-    return
 
 
 def add_data(page, time, content):
@@ -17,7 +16,6 @@ def add_data(page, time, content):
     object.set('time', time)
     object.set('content', content)
     object.save()
-    return
 
 
 def query_data(page, user_id, cur_time):
@@ -54,3 +52,8 @@ def update_user_info(user_id, cur_time):
         result.set('last_post_time', cur_time)
         result.save()
         return last_t
+
+
+if __name__ == '__main__':
+    leancloud_init()
+    query_data('testPage', 'hehe', 1446999990)

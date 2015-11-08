@@ -34,11 +34,11 @@ function shoot_bullet(start_right, start_top, content, total_time) {
 }
 
 function machine_gun(bullets, scroll_time) {
-    var last_timestamp = bullets[0].timestamp;
+    var last_timestamp = bullets[0].timestamp * 1000;
     for (var i = 0; i < bullets.length; i++) {
         var content = bullets[i].content;
         console.log(bullets[i]);
-        var timestamp = bullets[i].timestamp;
+        var timestamp = bullets[i].timestamp * 1000;
         setTimeout("shoot_bullet(-100, "
             + Math.random() * SCREEN_HEIGHT / 2 + ",'"
             + content + "', "
@@ -54,21 +54,21 @@ function get_bullets(page_url, user_id) {
             userID: user_id
         },
         function (data, status) {
+            //console.log(data);
             var jsonroot = JSON.parse(data);
-            machine_gun(jsonroot.contents, 8000);
-            //for (var i = 0; i < jsonroot.contents.length; i++) {
-            //    var text = $("<p></p>");
-            //    $("body").append(text);
-            //    $(text).text(jsonroot.contents[i].content);
-            //}
-        });
+            if (jsonroot.code == 0) {
+                //console.log(jsonroot);
+                machine_gun(jsonroot.contents, 8000);
+            }
+        }
+    );
 }
 
 var SCREEN_HEIGHT = window.innerHeight;
 var SCREEN_WIDTH = window.innerWidth;
 //var current_url = window.location.href;
 var user_id = 'hehe';
-var current_url ='testPage';
+var current_url = 'testPage';
 
 
 var bullets = [{content: "fuckfuckfuck", timestamp: 500},
@@ -77,10 +77,11 @@ var bullets = [{content: "fuckfuckfuck", timestamp: 500},
     {content: "卧槽", timestamp: 5000}];
 //machine_gun(bullets, 8000);
 
+//get_bullets(current_url, user_id);
 setInterval(function () {
     get_bullets(current_url, user_id);
     //machine_gun(bullets, 8000);
-}, 5000);
+}, 3000);
 
 //setTimeout("shoot_bullet(-100,100, '测试文本1', 8000)", 0);//延迟500ms执行该语句
 //setTimeout("shoot_bullet(-100,200, '啊哈哈哈哈打算放大维纳斯达芙妮撒旦法到哪里可忘记了空位了空间啊蝶恋蜂狂就', 8000)", 1000);

@@ -19,7 +19,10 @@ def test_demo():
 
 def get_content(page, user_id, cur_time):
     data = query_data(page, user_id, cur_time)
-    return json.dumps({'contents': data, 'code': 0})
+    if len(data)>0:
+        return json.dumps({'contents': data, 'code': 0})
+    else:
+        return json.dumps({'contents': data, 'code': 1})
 
 
 @app.route("/getData", methods=['GET', 'POST'])

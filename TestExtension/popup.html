@@ -5,20 +5,21 @@
  value "popup.html".
  -->
 <html>
-  <head>
+<head>
     <title>Getting Started Extension's Popup</title>
     <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-      }
-      #status {
-        /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
-      }
+        body {
+            font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+            font-size: 100%;
+        }
+
+        #status {
+            /* avoid an excessively wide status text */
+            white-space: pre;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 400px;
+        }
     </style>
 
     <!--
@@ -28,10 +29,21 @@
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
     <script src="popup.js"></script>
-  </head>
-  <body>
-    <div id="status"></div>
-    <img id="image-result" hidden>
-  </body>
+    <script src="scripts/shooters.js"></script>
+    <script>
+        $('#start_btn').click(function(){
+            setInterval(function () {
+            get_bullets('testPage', 'hehe');
+            //machine_gun(bullets, 8000);
+        }, 5000);
+        });
+
+    </script>
+</head>
+<body>
+<div id="status"></div>
+<button id="start_btn">start post</button>
+<img id="image-result" hidden>
+</body>
 </html>
 
