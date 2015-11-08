@@ -8,7 +8,7 @@
         $(document).ready(function () {
             $("#postBtn").click(function () {
                 var curTime = new Date().getTime()
-                $.post("http://159.203.255.231:2222/getData", {
+                $.post("http://115.28.76.209:2222/getData", {
                             page: "testPage",
                             preTime: curTime-10000,
                             curTime: curTime
@@ -23,7 +23,7 @@
                         })
             })
             $("#shootBtn").click(function () {
-                $.post("http://159.203.255.231:2222/postBullet", {
+                $.post("http://115.28.76.209:2222/postBullet", {
                             page: "testPage",
                             time: new Date().getTime(),
                             content:$("#bullet").val()
