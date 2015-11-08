@@ -1,5 +1,6 @@
 import json
 
+import time
 from flask import Flask, render_template, request, jsonify
 from flask.ext.cors import CORS
 
@@ -16,23 +17,22 @@ def test_demo():
     return render_template('TestInLocal.html')
 
 
-def get_content(page, pre_time, cur_time):
-    data = query_data(page, pre_time, cur_time)
-    return json.dumps(data)
+def get_content(page, user_id, cur_time):
+    data = query_data(page, user_id, cur_time)
+    return json.dumps({'contents': data, 'code': 0})
 
 
 @app.route("/getData", methods=['GET', 'POST'])
-def test_data():
+def get_data():
     if request.method == 'POST':
-        return get_content(request.form['page'], request.form['preTime'], request.form['curTime'])
+        return get_content(request.form['page'], request.form['userID'], time.time())
 
 
 @app.route("/postBullet", methods=['POST'])
 def bullet_post():
     if request.method == 'POST':
-        add_data(request.form['page'], request.form['time'], request.form['content'])
-    return "success"
-
+        add_data(request.form['page'], time.time(), request.form['content'])
+    return 'success'
 
 if __name__ == '__main__':
     leancloud_init()
