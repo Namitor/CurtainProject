@@ -9,12 +9,13 @@ def leancloud_init():
     leancloud.init('lXyQBue2G2I80NX9OIFY7TRk', 'NkLOGPRHeVrFdJOQiDIGVGJ7')
 
 
-def add_data(page, time, content):
+def add_data(page, time, content, user_id):
     curtain_object = Object.extend('CurtainObject')
     object = curtain_object()
     object.set('page', page)
     object.set('time', time)
     object.set('content', content)
+    object.set('userID', user_id)
     object.save()
 
 
@@ -52,8 +53,3 @@ def update_user_info(user_id, cur_time):
         result.set('last_post_time', cur_time)
         result.save()
         return last_t
-
-
-if __name__ == '__main__':
-    leancloud_init()
-    query_data('testPage', 'hehe', 1446999990)
