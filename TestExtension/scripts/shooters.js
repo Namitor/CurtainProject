@@ -49,7 +49,7 @@ function machine_gun(bullets, scroll_time) {
 }
 
 function get_bullets(page_url, user_id) {
-    $.post("/getData", {
+    $.post("http://project-curtain.avosapps.com/getData", {
             page: page_url,
             userID: user_id
         },
@@ -66,9 +66,11 @@ function get_bullets(page_url, user_id) {
 
 var SCREEN_HEIGHT = window.innerHeight;
 var SCREEN_WIDTH = window.innerWidth;
-//var current_url = window.location.href;
-var user_id = 'hehe';
-var current_url = 'testPage';
+var current_url = window.location.href;
+var user_ip = window.location.host;
+console.log(user_ip);
+var user_id = $.md5(current_url+timestamp);
+//var current_url = 'testPage';
 
 
 var bullets = [{content: "fuckfuckfuck", timestamp: 500},
@@ -80,7 +82,6 @@ var bullets = [{content: "fuckfuckfuck", timestamp: 500},
 //get_bullets(current_url, user_id);
 setInterval(function () {
     get_bullets(current_url, user_id);
-    //machine_gun(bullets, 8000);
 }, 3000);
 
 //setTimeout("shoot_bullet(-100,100, '测试文本1', 8000)", 0);//延迟500ms执行该语句

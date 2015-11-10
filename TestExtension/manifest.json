@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "ProjectCurtain",
-  "description": "This extension shows a Google Image search result for the current page",
+  "description": "少年，射么？",
   "version": "1.0",
   "browser_action": {
     "default_icon": "icon.png",
@@ -16,9 +16,10 @@
       ],
       "js": [
         "scripts/jquery-2.1.4.js",
+        "scripts/jQuery.md5.js",
         "scripts/shooters.js"
       ],
-      "run_at": "document_end",
+      "run_at": "document_idle",
       "all_frames": false
     }
   ],

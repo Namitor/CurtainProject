@@ -1,4 +1,5 @@
 import json
+import md5
 
 import time
 from flask import Flask, render_template, request, jsonify
@@ -19,7 +20,7 @@ def test_demo():
 
 def get_content(page, user_id, cur_time):
     data = query_data(page, user_id, cur_time)
-    if len(data)>0:
+    if len(data) > 0:
         return json.dumps({'contents': data, 'code': 0})
     else:
         return json.dumps({'contents': data, 'code': 1})
@@ -31,11 +32,17 @@ def get_data():
         return get_content(request.form['page'], request.form['userID'], time.time())
 
 
+@app.route('/init_user', methods=['GET'])
+def init_user():
+    return request.remote_addr
+
+
 @app.route("/postBullet", methods=['POST'])
 def bullet_post():
     if request.method == 'POST':
         add_data(request.form['page'], time.time(), request.form['content'])
     return 'success'
+
 
 if __name__ == '__main__':
     leancloud_init()
