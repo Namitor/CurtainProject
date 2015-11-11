@@ -8,8 +8,8 @@
         $(document).ready(function () {
             $("#postBtn").click(function () {
                 $.post("/getData", {
-                            page: "testPage",
-                            userID: "wangzi6147"
+                            page_url: "testPage",
+                            user_id: "wangzi6147"
                         },
                         function (data, status) {
                             var jsonroot = JSON.parse(data);
@@ -22,8 +22,9 @@
             });
             $("#shootBtn").click(function () {
                 $.post("/postBullet", {
-                            page: "testPage",
-                            content:$("#bullet").val()
+                            page_url: "testPage",
+                            content:$("#bullet").val(),
+                            user_id:"wangzi6147"
                         },
                         function (data, status) {
 //{#                            alert(status)#}
