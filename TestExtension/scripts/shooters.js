@@ -50,8 +50,8 @@ function machine_gun(bullets, scroll_time) {
 
 function get_bullets(page_url, user_id) {
     $.post("http://project-curtain.avosapps.com/getData", {
-            page: page_url,
-            userID: user_id
+            page_url: page_url,
+            user_id: user_id
         },
         function (data, status) {
             //console.log(data);
@@ -67,22 +67,29 @@ function get_bullets(page_url, user_id) {
 var SCREEN_HEIGHT = window.innerHeight;
 var SCREEN_WIDTH = window.innerWidth;
 var current_url = window.location.href;
-var user_ip = window.location.host;
-console.log(user_ip);
-var user_id = $.md5(current_url+timestamp);
+//var user_ip = window.location.host;
+//console.log(user_ip);
+//var user_id = $.md5(current_url+timestamp);
 //var current_url = 'testPage';
 
 
-var bullets = [{content: "fuckfuckfuck", timestamp: 500},
-    {content: "123123123", timestamp: 2500},
-    {content: "hahahahahha", timestamp: 3900},
-    {content: "卧槽", timestamp: 5000}];
+//var bullets = [{content: "fuckfuckfuck", timestamp: 500},
+//    {content: "123123123", timestamp: 2500},
+//    {content: "hahahahahha", timestamp: 3900},
+//    {content: "卧槽", timestamp: 5000}];
 //machine_gun(bullets, 8000);
 
 //get_bullets(current_url, user_id);
-setInterval(function () {
-    get_bullets(current_url, user_id);
-}, 3000);
+function start_shooting(page_url) {
+    $.post("http://project-curtain.avosapps.com/init_user", {page_url: page_url}, function (data) {
+        var jsonroot = JSON.parse(data);
+        var user_id = jsonroot['user_id'];
+        setInterval(function () {
+            get_bullets(page_url, user_id);
+        }, 3000);
+
+    });
+}
 
 //setTimeout("shoot_bullet(-100,100, '测试文本1', 8000)", 0);//延迟500ms执行该语句
 //setTimeout("shoot_bullet(-100,200, '啊哈哈哈哈打算放大维纳斯达芙妮撒旦法到哪里可忘记了空位了空间啊蝶恋蜂狂就', 8000)", 1000);
