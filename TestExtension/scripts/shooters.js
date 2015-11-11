@@ -67,6 +67,7 @@ function get_bullets(page_url, user_id) {
 var SCREEN_HEIGHT = window.innerHeight;
 var SCREEN_WIDTH = window.innerWidth;
 var current_url = window.location.href;
+var user_id = '';
 //var user_ip = window.location.host;
 //console.log(user_ip);
 //var user_id = $.md5(current_url+timestamp);
@@ -83,7 +84,7 @@ var current_url = window.location.href;
 function start_shooting(page_url) {
     $.post("http://project-curtain.avosapps.com/init_user", {page_url: page_url}, function (data) {
         var jsonroot = JSON.parse(data);
-        var user_id = jsonroot['user_id'];
+        user_id = jsonroot['user_id'];
         setInterval(function () {
             get_bullets(page_url, user_id);
         }, 3000);
@@ -91,5 +92,6 @@ function start_shooting(page_url) {
     });
 }
 
+start_shooting(current_url);
 //setTimeout("shoot_bullet(-100,100, '测试文本1', 8000)", 0);//延迟500ms执行该语句
 //setTimeout("shoot_bullet(-100,200, '啊哈哈哈哈打算放大维纳斯达芙妮撒旦法到哪里可忘记了空位了空间啊蝶恋蜂狂就', 8000)", 1000);

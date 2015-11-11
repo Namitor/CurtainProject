@@ -8,12 +8,19 @@ chrome.tabs.query({active: true}, function (tabs) {
     $("#cur_url").text('当前网址：' + current_url);
 
 });
-$("#btn_start").click(function () {
-
-    //alert('start');
-    console.log('start');
-    //start_shooting()
-
+$("#btn_shoot").click(function () {
+    if(user_id!='') {
+        $.post("http://project-curtain.avosapps.com/postBullet", {
+                page_url: current_url,
+                content: $("#bullet_content").val(),
+                user_id: user_id
+            },
+            function (data, status) {
+                console.log(status);
+            });
+    }else{
+        console.log('waiting for user_id');
+    }
 });
 
 //document.getElementById("btn_start").onclick = function () {

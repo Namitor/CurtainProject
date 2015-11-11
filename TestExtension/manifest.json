@@ -11,8 +11,7 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/*",
-        "https://*/*"
+        "http://tv.byr.cn/*"
       ],
       "js": [
         "scripts/jquery-2.1.4.js",
