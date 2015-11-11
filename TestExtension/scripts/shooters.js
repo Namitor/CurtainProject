@@ -93,5 +93,11 @@ function start_shooting(page_url) {
 }
 
 start_shooting(current_url);
+chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.message == 'get_user_id') {
+        sendResponse({result: user_id});
+    }
+});
+
 //setTimeout("shoot_bullet(-100,100, '测试文本1', 8000)", 0);//延迟500ms执行该语句
 //setTimeout("shoot_bullet(-100,200, '啊哈哈哈哈打算放大维纳斯达芙妮撒旦法到哪里可忘记了空位了空间啊蝶恋蜂狂就', 8000)", 1000);
