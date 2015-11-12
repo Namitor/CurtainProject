@@ -28,6 +28,11 @@
     "https://*/*"
   ],
   "web_accessible_resources": [
-    "imgs/2333.jpg"
+    "imgs/2333.jpg",
+    "imgs/bg.jpg",
+    "css/style.css",
+    "css/demoe.css",
+    "css/font-awesome.css",
+    "css/normalize.css"
   ]
 }

@@ -7,7 +7,7 @@
 <html>
 <head>
     <title>起来嗨</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
         body {
             font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
@@ -22,6 +22,7 @@
             max-width: 400px;
         }
     </style>
+    <!--<link rel="stylesheet" type="text/css" href="css/style.css">-->
 
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
@@ -33,12 +34,15 @@
 
 </head>
 <body>
-<div id="status">
-    <span id="cur_title">当前页面：</span>
-    <span id="cur_url">当前网址：</span>
-
-    <input id="bullet_content" type="text" size="60">
-    <button id="btn_shoot">send</button>
+<div id="status" class=>
+    <div>
+        <span id="cur_title">当前页面：</span>
+        <span id="cur_url">当前网址：</span>
+        <span id="cur_status">状态：</span>
+        激活<input type="checkbox" id="btn_switch">
+        <input id="bullet_content" type="text" size="60">
+        <button id="btn_shoot">send</button>
+    </div>
     <script src="scripts/popup.js"></script>
 </div>
 </body>
