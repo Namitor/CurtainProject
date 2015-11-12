@@ -27,7 +27,7 @@ function shoot_bullet(start_right, start_top, content, total_time) {
     //console.log("before animate====" + bullet.css('left'));
     //console.log(-bullet.width());
     bullet.animate({left: -$(this).width()}, total_time, "linear", function () {
-        console.log($(this), 'remove');
+        //console.log($(this), 'remove');
         $(this).remove();
     });
     //console.log(bullet + "animated");

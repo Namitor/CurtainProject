@@ -4,7 +4,7 @@
   "description": "少年，射么？",
   "version": "1.0",
   "browser_action": {
-    "default_icon": "icon.png",
+    "default_icon": "imgs/icon.jpg",
     "default_popup": "popup.html",
     "default_title": "点我！"
   },
@@ -16,7 +16,8 @@
       "js": [
         "scripts/jquery-2.1.4.js",
         "scripts/jQuery.md5.js",
-        "scripts/shooters.js"
+        "scripts/shooters.js",
+        "scripts/rifleman.js"
       ],
       "run_at": "document_idle",
       "all_frames": false
@@ -28,11 +29,6 @@
     "https://*/*"
   ],
   "web_accessible_resources": [
-    "imgs/2333.jpg",
-    "imgs/bg.jpg",
-    "css/style.css",
-    "css/demoe.css",
-    "css/font-awesome.css",
-    "css/normalize.css"
+    "imgs/icon.jpg"
   ]
 }
