@@ -30,15 +30,45 @@
 //{#                            alert(status)#}
                         });
             });
+            $('#initBtn').click(function(){
+                $.post('/init_user', {
+                    page_url:'testPage'
+                },
+                function(data,status){
+                    var jsonroot = JSON.parse(data);
+                    console.log(jsonroot.user_id);
+                });
+            });
+            $('#logoutBtn').click(function(){
+                $.post('/logout', {
+                    page_url:'testPage',
+                    user_id:$('#id_input').val()
+                },
+                function(data,status){
+                    console.log(status)
+                });
+            });
+            $('#getNumBtn').click(function(){
+                $.post('/getUserNum', {
+                    page_url:'testPage'
+                },
+                function(data,status){
+                    var jsonroot = JSON.parse(data)
+                    console.log(jsonroot.user_num)
+                });
+            });
         });
 
     </script>
 </head>
 <body>
+<p><button id="initBtn">test init</button></p>
 <p><button id="postBtn">test post</button></p>
-<input id="bullet" type="text" size="80">
+<p><input id="bullet" type="text" size="80">
 <button id="shootBtn">
     shoot
-</button>
+</button></p>
+<p><input id="id_input" type="text" size="80"><button id="logoutBtn">test logout</button></p>
+<p><button id="getNumBtn">test getNum</button></p>
 </body>
 </html>
