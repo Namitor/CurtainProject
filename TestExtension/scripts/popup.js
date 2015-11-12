@@ -1,21 +1,24 @@
-console.log($("#btn_start"));
+//console.log($("#btn_start"));
 var current_url;
 var current_title;
 var user_id = '';
 var isAcitive = false;
+var cur_user_num = 0;
 console.log('popup');
 chrome.tabs.query({active: true}, function (tabs) {
     current_url = tabs[0].url;
     current_title = tabs[0].title;
     $("#cur_title").text('当前页面：' + current_title);
     $("#cur_url").text('当前网址：' + current_url);
-    chrome.tabs.sendMessage(tabs[0].id, {message: "get_user_id"}, function (response) {
+    chrome.tabs.sendMessage(tabs[0].id, {message: "get_status"}, function (response) {
         if (response != null) {
             user_id = response.result;
             isAcitive = response.status;
+            cur_user_num = response.audience_user_num;
             $("#btn_switch")[0].checked = isAcitive;
             console.log('get userid:' + user_id);
             $("#cur_status").text('是否激活:' + isAcitive);
+            $("#cur_audience_num").text('当前观众数：' + cur_user_num)
         } else {
             console.log('no response')
         }
@@ -31,8 +34,12 @@ $('#btn_switch').click(function () {
                 if (response != null) {
                     console.log('started');
                     user_id = response.result;
+                    isAcitive = response.status;
+                    console.log(isAcitive);
+                    $("#cur_status").text('是否激活:' + isAcitive);
                 } else {
                     console.log('no response');
+                    $('#btn_switch')[0].checked = false
                 }
             });
         });
@@ -46,14 +53,15 @@ $('#btn_switch').click(function () {
                 if (response != null) {
                     console.log('stoped');
                     user_id = response.result;
-
+                    isAcitive = response.status;
+                    console.log(isAcitive);
+                    $("#cur_status").text('是否激活:' + isAcitive);
                 } else {
                     console.log('no response');
                 }
             });
         });
     }
-    $("#cur_status").text('是否激活:' + $('#btn_switch')[0].checked);
     //console.log('donw click' + cur_status);
     //$("#cur_status").text('状态:' + cur_status);
 });
@@ -84,6 +92,7 @@ $("#btn_shoot").click(function () {
         });
     }
 });
+
 
 //document.getElementById("btn_start").onclick = function () {
 //    console.log(123123);

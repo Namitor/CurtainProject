@@ -9,46 +9,73 @@ var shooter;
 var isActive = false;
 
 
-get_userid(current_url);//首先获取userid，给全局变量user_id赋值
+//get_userid(current_url);//首先获取userid，给全局变量user_id赋值
 
 
-function start_shooting(page_url, user_id) {
+function start_shooting(page_url, sendResponse_handler) {
     //console.log('url:' + page_url);
     //console.log('userid:' + user_id);
-    isActive = true;
-    shooter = setInterval(function () {
-        get_bullets(page_url, user_id);
-    }, 3000);
-}
-function stop_shooting() {
-    clearInterval(shooter);
-    isActive = false;
-}
 
-function get_userid(page_url) {
     $.post("http://project-curtain.avosapps.com/init_user", {page_url: page_url}, function (data) {
         var jsonroot = JSON.parse(data);
         user_id = jsonroot['user_id'];
+        isActive = true;
         console.log(user_id);
-        //sendResponse({result: user_id});
+        console.log(isActive);
+        sendResponse_handler({result: user_id, status: isActive});
+        shooter = setInterval(function () {
+            get_bullets(page_url, user_id);
+        }, 3000);
     });
+}
+function stop_shooting(page_url, u_id) {
+    clearInterval(shooter);
+    $.post('http://project-curtain.avosapps.com/logout', {
+            page_url: page_url,
+            user_id: u_id
+        },
+        function (data, status) {
+            console.log(status)
+        });
+    isActive = false;
+    user_id = '';
+}
+
+function get_status(page_url, sendResponse_handler) {
+    //$.post("http://project-curtain.avosapps.com/init_user", {page_url: page_url}, function (data) {
+    //    var jsonroot = JSON.parse(data);
+    //    user_id = jsonroot['user_id'];
+    //    console.log(user_id);
+    //    //sendResponse({result: user_id});
+    //});
+    $.post('http://project-curtain.avosapps.com/getUserNum', {
+            page_url: page_url
+        },
+        function (data, status) {
+            var jsonroot = JSON.parse(data);
+            var user_num = jsonroot['user_num'];
+            console.log(user_num);
+            sendResponse_handler({result: user_id, status: isActive, audience_user_num: user_num});
+
+        });
 }
 
 
 //chrome listener 主要的popup和主页面交互中心
 chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
     switch (request.message) {
-        case 'get_user_id':
-            sendResponse({result: user_id, status: isActive});
+        case 'get_status':
+            get_status(current_url, sendResponse);
+            //sendResponse({result: user_id, status: isActive,audience:});
             break;
         case 'start_shooting':
             console.log('start shooting');
-            start_shooting(current_url, user_id);
-            //sendResponse({result: user_id});
+            start_shooting(current_url, sendResponse);
             break;
         case 'stop_shooting':
             console.log('stop shooting');
             stop_shooting();
+            sendResponse({result: user_id, status: isActive});
             //sendResponse({result: user_id});
             break;
         case 'alert_msg':
@@ -57,4 +84,5 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
         default:
             break;
     }
+    return true;//设为true时，sendResponse可以响应异步返回
 });
