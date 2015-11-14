@@ -19,17 +19,15 @@ def test_demo():
     return render_template('TestInLocal.html')
 
 
-def get_content(page, user_id, cur_time):
-    data = leancloud_manager.query_data(page, user_id, cur_time)
+@app.route("/getData", methods=['POST'])
+def get_data():
+    if request.form[STR_USER_ID] == '':
+        return json.dumps({'contents': '', 'code': 1})
+    data = leancloud_manager.query_data(request.form[STR_PAGE_URL], request.form[STR_USER_ID], time.time())
     if len(data) > 0:
         return json.dumps({'contents': data, 'code': 0})
     else:
         return json.dumps({'contents': data, 'code': 1})
-
-
-@app.route("/getData", methods=['POST'])
-def get_data():
-    return get_content(request.form[STR_PAGE_URL], request.form[STR_USER_ID], time.time())
 
 
 @app.route('/init_user', methods=['POST'])
@@ -39,13 +37,15 @@ def init_user():
     m = hashlib.md5()
     m.update(page_url + str(request.remote_addr) + str(cur_time))
     md5_id = m.hexdigest()
-    leancloud_manager.update_page_info(page_url, md5_id)
+    # leancloud_manager.update_page_info(page_url, md5_id)
     leancloud_manager.update_user_info(page_url, md5_id, cur_time)
     return json.dumps({STR_USER_ID: md5_id})
 
 
 @app.route("/postBullet", methods=['POST'])
 def bullet_post():
+    if request.form[STR_USER_ID] == '':
+        return 'failed'
     leancloud_manager.add_data(request.form[STR_PAGE_URL], time.time(), request.form['content'],
                                request.form[STR_USER_ID])
     return 'success'
@@ -53,8 +53,8 @@ def bullet_post():
 
 @app.route('/logout', methods=['POST'])
 def log_out():
-    #leancloud_manager.delete_page_user(request.form[STR_PAGE_URL], request.form[STR_USER_ID])
-    leancloud_manager.update_user_status()
+    # leancloud_manager.delete_page_user(request.form[STR_PAGE_URL], request.form[STR_USER_ID])
+    # leancloud_manager.update_user_status()
     return 'success'
 
 
