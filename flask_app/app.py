@@ -35,11 +35,12 @@ def get_data():
 @app.route('/init_user', methods=['POST'])
 def init_user():
     cur_time = time.time()
+    page_url = request.form[STR_PAGE_URL]
     m = hashlib.md5()
-    m.update(request.form[STR_PAGE_URL] + str(request.remote_addr) + str(cur_time))
+    m.update(page_url + str(request.remote_addr) + str(cur_time))
     md5_id = m.hexdigest()
-    leancloud_manager.update_page_info(request.form[STR_PAGE_URL], md5_id)
-    leancloud_manager.update_user_info(md5_id, cur_time)
+    leancloud_manager.update_page_info(page_url, md5_id)
+    leancloud_manager.update_user_info(page_url, md5_id, cur_time)
     return json.dumps({STR_USER_ID: md5_id})
 
 
@@ -52,7 +53,8 @@ def bullet_post():
 
 @app.route('/logout', methods=['POST'])
 def log_out():
-    leancloud_manager.delete_page_user(request.form[STR_PAGE_URL], request.form[STR_USER_ID])
+    #leancloud_manager.delete_page_user(request.form[STR_PAGE_URL], request.form[STR_USER_ID])
+    leancloud_manager.update_user_status()
     return 'success'
 
 

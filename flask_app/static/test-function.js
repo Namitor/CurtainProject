@@ -1,11 +1,14 @@
 /**
  * Created by wangzi6147 on 2015/11/12.
  */
+
+var user_id = 'wangzi6147';
+
 $(document).ready(function () {
     $("#postBtn").click(function () {
         $.post("/getData", {
                 page_url: "testPage",
-                user_id: "wangzi6147"
+                user_id: user_id
             },
             function (data, status) {
                 var jsonroot = JSON.parse(data);
@@ -20,7 +23,7 @@ $(document).ready(function () {
         $.post("/postBullet", {
                 page_url: "testPage",
                 content: $("#bullet").val(),
-                user_id: "wangzi6147"
+                user_id: user_id
             },
             function (data, status) {
 //{#                            alert(status)#}
@@ -32,13 +35,13 @@ $(document).ready(function () {
             },
             function (data, status) {
                 var jsonroot = JSON.parse(data);
-                console.log(jsonroot.user_id);
+                user_id = jsonroot.user_id;
             });
     });
     $('#logoutBtn').click(function () {
         $.post('/logout', {
                 page_url: 'testPage',
-                user_id: $('#id_input').val()
+                user_id: user_id
             },
             function (data, status) {
                 console.log(status)
