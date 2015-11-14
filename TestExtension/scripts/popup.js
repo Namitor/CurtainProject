@@ -1,4 +1,4 @@
-//console.log($("#btn_start"));
+// chrome tab相关
 var current_url;
 var current_title;
 var user_id = '';
@@ -23,9 +23,51 @@ chrome.tabs.query({active: true}, function (tabs) {
             console.log('no response')
         }
     });
+    //chrome.tabs.onRemoved.addListener(tabs[0].id, function () {
+    //    //alert(user_id);
+    //
+    //    if (isActive) {
+    //        //clearInterval(shooter);
+    //        //$.post('http://project-curtain.avosapps.com/logout', {
+    //        //        page_url: current_url,
+    //        //        user_id: user_id
+    //        //    },
+    //        //    function (data, status) {
+    //        //        console.log('logout' + status);
+    //        //        isActive = false;
+    //        //        user_id = '';
+    //        //    });
+    //        chrome.extension.sendRequest(
+    //            {task: "close_tab", user_id: user_id, page_url: current_url},
+    //            function (response) {
+    //                //console.log(response.farewell);
+    //            });
+    //    }
+    //});
+    //chrome.tabs.onUpdate.addListener(tabs[0].id, function () {
+    //    if (isActive) {
+    //        //clearInterval(shooter);
+    //        //$.post('http://project-curtain.avosapps.com/logout', {
+    //        //        page_url: current_url,
+    //        //        user_id: user_id
+    //        //    },
+    //        //    function (data, status) {
+    //        //        console.log('logout' + status);
+    //        //        isActive = false;
+    //        //        user_id = '';
+    //        //    });
+    //        chrome.extension.sendRequest(
+    //            {task: "close_tab", user_id: user_id, page_url: current_url},
+    //            function (response) {
+    //                //console.log(response.farewell);
+    //            });
+    //    }
+    //});
 
 });
 
+
+//用户操作相关
 $('#btn_switch').click(function () {
     //console.log($('#btn_switch')[0].checked);
     if ($('#btn_switch')[0].checked) {
@@ -37,6 +79,9 @@ $('#btn_switch').click(function () {
                     isAcitive = response.status;
                     console.log(isAcitive);
                     $("#cur_status").text('是否激活:' + isAcitive);
+                    cur_user_num += 1;
+                    $("#cur_audience_num").text('当前观众数：' + cur_user_num)
+
                 } else {
                     console.log('no response');
                     $('#btn_switch')[0].checked = false
@@ -56,6 +101,9 @@ $('#btn_switch').click(function () {
                     isAcitive = response.status;
                     console.log(isAcitive);
                     $("#cur_status").text('是否激活:' + isAcitive);
+                    cur_user_num -= 1;
+                    $("#cur_audience_num").text('当前观众数：' + cur_user_num)
+
                 } else {
                     console.log('no response');
                 }

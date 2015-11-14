@@ -9,6 +9,7 @@ var shooter;
 var isActive = false;
 
 
+
 //get_userid(current_url);//首先获取userid，给全局变量user_id赋值
 
 
@@ -28,20 +29,22 @@ function start_shooting(page_url, sendResponse_handler) {
         }, 3000);
     });
 }
-function stop_shooting(page_url, u_id) {
+function stop_shooting(page_url, u_id, sendResponse_handler) {
     clearInterval(shooter);
-    $.post('http://project-curtain.avosapps.com/logout', {
-            page_url: page_url,
-            user_id: u_id
-        },
-        function (data, status) {
-            console.log(status)
-        });
+    //$.post('http://project-curtain.avosapps.com/logout', {
+    //        page_url: page_url,
+    //        user_id: u_id
+    //    },
+    //    function (data, status) {
+    //    });
+    console.log('logout' + status);
     isActive = false;
     user_id = '';
+    sendResponse_handler({result: user_id, status: isActive})
 }
 
-function get_status(page_url, sendResponse_handler) {
+
+function get_status(page_url, sendResponse_handler) {//popup每次被点开后，用于获取状态
     //$.post("http://project-curtain.avosapps.com/init_user", {page_url: page_url}, function (data) {
     //    var jsonroot = JSON.parse(data);
     //    user_id = jsonroot['user_id'];
@@ -61,6 +64,22 @@ function get_status(page_url, sendResponse_handler) {
 }
 
 
+function onCloseTab() {//用户关闭了页面后的操作
+    if (isActive) {
+        clearInterval(shooter);
+        $.post('http://project-curtain.avosapps.com/logout', {
+                page_url: current_url,
+                user_id: user_id
+            },
+            function (data, status) {
+                console.log('logout' + status);
+                isActive = false;
+                user_id = '';
+            });
+    }
+}
+
+
 //chrome listener 主要的popup和主页面交互中心
 chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
     switch (request.message) {
@@ -74,9 +93,12 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
             break;
         case 'stop_shooting':
             console.log('stop shooting');
-            stop_shooting();
-            sendResponse({result: user_id, status: isActive});
+            stop_shooting(current_url, user_id, sendResponse);
+            //sendResponse({result: user_id, status: isActive});
             //sendResponse({result: user_id});
+            break;
+        case 'close_tab':
+            onCloseTab();
             break;
         case 'alert_msg':
             alert(request.msg);//不能在popup.html中alert，否则会关掉popup.html，所以通过消息机制进行alert
