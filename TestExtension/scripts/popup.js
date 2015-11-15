@@ -66,6 +66,8 @@ chrome.tabs.query({active: true}, function (tabs) {
 
 });
 
+//boostrap switch初始化
+//$("#btn_switch").bootstrapSwitch();
 
 //用户操作相关
 $('#btn_switch').click(function () {
@@ -125,7 +127,7 @@ $("#btn_shoot").click(function () {
             },
             function (data, status) {
                 console.log(status);
-                if (status == 'success'){
+                if (status == 'success') {
                     window.close();
                 }
             });
@@ -144,7 +146,7 @@ $("#btn_shoot").click(function () {
     }
 });
 
-$("#bullet_content").keydown(function(e) {
+$("#bullet_content").keydown(function (e) {
     var curKey = e.which;
     if (curKey == 13) {
         $("#btn_shoot").click();

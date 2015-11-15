@@ -14,13 +14,13 @@
             font-size: 100%;
         }
 
-        #status {
-            /* avoid an excessively wide status text */
-            white-space: pre;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            max-width: 400px;
-        }
+        /*#status {*/
+        /*/!* avoid an excessively wide status text *!/*/
+        /*white-space: pre;*/
+        /*text-overflow: ellipsis;*/
+        /*/!*overflow: hidden;*!/*/
+        /*max-width: 500px;*/
+        /*}*/
     </style>
     <!--<link rel="stylesheet" type="text/css" href="css/style.css">-->
 
@@ -31,20 +31,41 @@
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
     <script src="scripts/jquery-2.1.4.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/project_style.css">
+    <!-- bootstrap-->
+    <script src="scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+    <!-- bootstrap switch-->
+    <script src="scripts/bootstrap-switch.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-switch.min.css">
+
 
 </head>
 <body>
-<div id="status" class=>
-    <div>
-        <span id="cur_title">当前页面：</span>
-        <span id="cur_url">当前网址：</span>
-        <span id="cur_audience_num">当前观众数：</span>
-        <span id="cur_status">状态：</span>
-        激活<input type="checkbox" id="btn_switch">
-        <input id="bullet_content" type="text" size="60">
-        <button id="btn_shoot">send</button>
+<div class="container box">
+    <div class="row" id="status">
+        <div class="row">
+            <div class="col-md-12" id="cur_title">当前页面：</div>
+            <div class="col-md-12" id="cur_url">当前网址：</div>
+            <div class="col-md-12" id="cur_audience_num">当前观众数：</div>
+            <div class="col-md-2" id="cur_status">状态：</div>
+            <div class="col-md-4">
+                <div class="bootstrap-switch">
+                    <input type="checkbox" id="btn_switch">
+                </div>
+            </div>
+            <div class="col-md-6"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <input class="col-md-8 input-sm" placeholder="说点啥吧..."
+                       id="bullet_content" type="text" size="60">
+                <button class="col-md-4 btn btn-primary btn-info" id="btn_shoot">send</button>
+            </div>
+        </div>
+        <script src="scripts/popup.js"></script>
     </div>
-    <script src="scripts/popup.js"></script>
 </div>
 </body>
 </html>

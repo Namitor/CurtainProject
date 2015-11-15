@@ -15,9 +15,16 @@
       ],
       "js": [
         "scripts/jquery-2.1.4.js",
-        "scripts/jQuery.md5.js",
+        "scripts/bootstrap.min.js",
+        "scripts/bootstrap-switch.min.js",
         "scripts/shooters.js",
         "scripts/rifleman.js"
+      ],
+      "css": [
+        "css/bootstrap.min.css",
+        "css/bootstrap-theme.min.css",
+        "css/bootstrap-switch.min.css",
+        "css/project_style.css"
       ],
       "run_at": "document_idle",
       "all_frames": false
