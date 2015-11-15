@@ -125,6 +125,9 @@ $("#btn_shoot").click(function () {
             },
             function (data, status) {
                 console.log(status);
+                if (status == 'success'){
+                    window.close();
+                }
             });
     } else {
         console.log('waiting for activation');
@@ -141,7 +144,13 @@ $("#btn_shoot").click(function () {
     }
 });
 
-
+$("#bullet_content").keydown(function(e) {
+    var curKey = e.which;
+    if (curKey == 13) {
+        $("#btn_shoot").click();
+        return false;
+    }
+});
 //document.getElementById("btn_start").onclick = function () {
 //    console.log(123123);
 //    alert('123asdfasdf');

@@ -4,7 +4,7 @@
   "description": "少年，射么？",
   "version": "1.0",
   "browser_action": {
-    "default_icon": "imgs/icon.jpg",
+    "default_icon": "imgs/icon.png",
     "default_popup": "popup.html",
     "default_title": "点我！"
   },
@@ -29,6 +29,7 @@
     "https://*/*"
   ],
   "web_accessible_resources": [
-    "imgs/icon.jpg"
+    "imgs/icon.jpg",
+    "imgs/icon.png"
   ]
 }
