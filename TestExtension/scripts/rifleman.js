@@ -37,7 +37,7 @@ function stop_shooting(page_url, u_id, sendResponse_handler) {
     //    },
     //    function (data, status) {
     //    });
-    console.log('logout' + status);
+    //console.log('logout' + status);
     isActive = false;
     user_id = '';
     sendResponse_handler({result: user_id, status: isActive})
