@@ -42,6 +42,7 @@ $("#btn_switch").bootstrapSwitch({
     onText: "激活",
     offText: "未激活",
     onColor: "success",
+    indeterminate:"true",
     onSwitchChange: function (event, state) {
         //alert($(this).prop("checked"));
         if ($(this).prop("checked")) {
@@ -112,7 +113,7 @@ $("#btn_shoot").click(function () {
     } else {
         console.log('waiting for activation');
         chrome.tabs.query({active: true}, function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, {message: "alert_msg", msg: '请先开启弹幕功能'}, function (response) {
+            chrome.tabs.sendMessage(tabs[0].id, {message: "alert_msg", msg: '请先激活弹幕功能'}, function (response) {
                 if (response != null) {
                     //console.log('started');
                     user_id = response.result;

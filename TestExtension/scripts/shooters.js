@@ -15,8 +15,6 @@ function shoot_bullet(start_right, start_top, content, total_time) {
     $("body").append("<div class='bullet_item' id='bullet" + temp_time + "'>" + content + "</div>");
     var bullet = $("#bullet" + temp_time);
     bullet.css({
-        'font-size': '35px',
-        height: '35px',
         top: start_top,
         left: window.innerWidth - start_right,
         color: '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16)
