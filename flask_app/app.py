@@ -41,7 +41,8 @@ def init_user():
     m.update(page_url + str(request.remote_addr) + str(cur_time))
     md5_id = m.hexdigest()
     # leancloud_manager.update_page_info(page_url, md5_id)
-    leancloud_manager.update_user_info(page_url, md5_id, cur_time)
+    # leancloud_manager.update_user_info(page_url, md5_id, cur_time)
+    leancloud_manager.update_temp_user_info(page_url, md5_id, cur_time)
     return json.dumps({STR_USER_ID: md5_id})
 
 
@@ -61,6 +62,7 @@ def log_out():
     # leancloud_manager.delete_page_user(request.form[STR_PAGE_URL], request.form[STR_USER_ID])
     # leancloud_manager.update_user_status()
     # leancloud_manager.update_temp_data()
+    # leancloud_manager.update_temp_user()
     return 'success'
 
 
