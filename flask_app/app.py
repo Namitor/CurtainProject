@@ -23,7 +23,10 @@ def test_demo():
 def get_data():
     if request.form[STR_USER_ID] == '':
         return json.dumps({'contents': '', 'code': 1})
-    data = leancloud_manager.query_data(request.form[STR_PAGE_URL], request.form[STR_USER_ID], time.time())
+    # data = leancloud_manager.query_data(request.form[STR_PAGE_URL], request.form[STR_USER_ID], time.time())
+    data = leancloud_manager.query_data_from_dict(request.form[STR_PAGE_URL],
+                                                  request.form[STR_USER_ID],
+                                                  time.time())
     if len(data) > 0:
         return json.dumps({'contents': data, 'code': 0})
     else:
@@ -46,8 +49,10 @@ def init_user():
 def bullet_post():
     if request.form[STR_USER_ID] == '':
         return 'failed'
-    leancloud_manager.add_data(request.form[STR_PAGE_URL], time.time(), request.form['content'],
-                               request.form[STR_USER_ID])
+    # leancloud_manager.add_data(request.form[STR_PAGE_URL], time.time(), request.form['content'],
+    #                            request.form[STR_USER_ID])
+    leancloud_manager.add_data_in_dict(request.form[STR_PAGE_URL], time.time(), request.form['content'],
+                                       request.form[STR_USER_ID])
     return 'success'
 
 
@@ -55,6 +60,7 @@ def bullet_post():
 def log_out():
     # leancloud_manager.delete_page_user(request.form[STR_PAGE_URL], request.form[STR_USER_ID])
     # leancloud_manager.update_user_status()
+    # leancloud_manager.update_temp_data()
     return 'success'
 
 

@@ -5,6 +5,8 @@ from leancloud import Object
 from leancloud import Query
 from requests.packages import urllib3
 
+temp_data_dict = dict()
+
 
 def leancloud_init():
     '''
@@ -13,6 +15,47 @@ def leancloud_init():
     '''
     urllib3.disable_warnings()
     leancloud.init('lXyQBue2G2I80NX9OIFY7TRk', 'NkLOGPRHeVrFdJOQiDIGVGJ7')
+
+
+def add_data_in_dict(page, timestamp, content, user_id):
+    if page not in temp_data_dict.keys():
+        temp_data_dict[page] = dict()
+    if timestamp not in temp_data_dict[page].keys():
+        temp_data_dict[page][timestamp] = dict()
+    temp_data_dict[page][timestamp][user_id] = content
+
+
+def query_data_from_dict(page, user_id, cur_time):
+    last_post_time = update_user_info(page, user_id, cur_time)
+    data = list()
+    page_dict = temp_data_dict[page]
+    for timestamp in page_dict:
+        if last_post_time < timestamp <= cur_time:
+            time_dict = page_dict[timestamp]
+            for user_id in time_dict:
+                data.append({'content': time_dict[user_id], 'timestamp': timestamp})
+    return data
+
+
+def update_temp_data():
+    temp_time_list = list()
+    temp_page_list = list()
+    cur_time = time.time()
+    for page in temp_data_dict:
+        page_dict = temp_data_dict[page]
+        for timestamp in page_dict:
+            if timestamp < cur_time - 5:
+                time_dict = page_dict[timestamp]
+                for user_id in time_dict:
+                    add_data(page, timestamp, time_dict[user_id], user_id)
+                    print 'add one'
+                temp_time_list.append(timestamp)
+        for timestamp in temp_time_list:
+            del page_dict[timestamp]
+        if len(page_dict) == 0:
+            temp_page_list.append(page)
+    for page in temp_page_list:
+        del temp_data_dict[page]
 
 
 def add_data(page, time, content, user_id):
