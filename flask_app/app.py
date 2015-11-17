@@ -8,7 +8,7 @@ import leancloud_manager
 __author__ = 'jayvee'
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins='http://tv.byr.cn/*')
 
 STR_PAGE_URL = 'page_url'
 STR_USER_ID = 'user_id'
