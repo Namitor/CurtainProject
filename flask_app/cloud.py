@@ -15,7 +15,8 @@ def log_timer():
 @engine.define
 def user_timer():
     print 'clean user.' + str(time.time())
-    leancloud_manager.update_user_status()
+    #leancloud_manager.update_user_status()
+    leancloud_manager.update_temp_user()
 
 
 @engine.define

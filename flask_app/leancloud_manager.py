@@ -6,6 +6,7 @@ from leancloud import Query
 from requests.packages import urllib3
 
 temp_data_dict = dict()
+temp_user_dict = dict()
 
 
 def leancloud_init():
@@ -25,9 +26,25 @@ def add_data_in_dict(page, timestamp, content, user_id):
     temp_data_dict[page][timestamp][user_id] = content
 
 
+def update_temp_user_info(page_url, user_id, cur_time):
+    if user_id not in temp_user_dict.keys():
+        temp_list = list()
+        temp_list.append(cur_time)
+        temp_list.append(page_url)
+        temp_user_dict[user_id] = temp_list
+        return cur_time
+    else:
+        last_t = temp_user_dict[user_id][0]
+        temp_user_dict[user_id][0] = cur_time
+        return last_t
+
+
 def query_data_from_dict(page, user_id, cur_time):
-    last_post_time = update_user_info(page, user_id, cur_time)
+    # last_post_time = update_user_info(page, user_id, cur_time)
+    last_post_time = update_temp_user_info(page, user_id, cur_time)
     data = list()
+    if page not in temp_data_dict.keys():
+        return data
     page_dict = temp_data_dict[page]
     for timestamp in page_dict:
         if last_post_time < timestamp <= cur_time:
@@ -48,7 +65,7 @@ def update_temp_data():
                 time_dict = page_dict[timestamp]
                 for user_id in time_dict:
                     add_data(page, timestamp, time_dict[user_id], user_id)
-                    print 'add one'
+                    print 'add ' + str(timestamp)
                 temp_time_list.append(timestamp)
         for timestamp in temp_time_list:
             del page_dict[timestamp]
@@ -56,6 +73,24 @@ def update_temp_data():
             temp_page_list.append(page)
     for page in temp_page_list:
         del temp_data_dict[page]
+
+
+def update_temp_user():
+    cur_time = time.time()
+    temp_list = list()
+    cls_user = Object.extend('UserInfo')
+    for user_id in temp_user_dict:
+        if temp_user_dict[user_id][0] < cur_time - 5:
+            obj_user = cls_user()
+            obj_user.set('user_id', user_id)
+            obj_user.set('last_post_time', temp_user_dict[user_id][0])
+            obj_user.set('page_url', temp_user_dict[user_id][1])
+            obj_user.set('status', 'inactive')
+            obj_user.save()
+            print 'update ' + str(user_id)
+            temp_list.append(user_id)
+    for user_id in temp_list:
+        del temp_user_dict[user_id]
 
 
 def add_data(page, time, content, user_id):
@@ -190,11 +225,15 @@ def get_user_num(page_url):
     # except Exception, e:
     #     return 0
     # return result.get('user_num')
-    cls_user = Object.extend('UserInfo')
-    query_user = Query(cls_user)
-    query_user.equal_to('page_url', page_url)
-    query_user.equal_to('status', 'active')
-    return query_user.count()
+    # cls_user = Object.extend('UserInfo')
+    # query_user = Query(cls_user)
+    # query_user.equal_to('page_url', page_url)
+    # query_user.equal_to('status', 'active')
+    i = 0
+    for user_id in temp_user_dict:
+        if temp_user_dict[user_id][1] == page_url:
+            i += 1
+    return i
 
 
 def refresh_page_info(page_url):
@@ -226,7 +265,6 @@ def update_user_status():
     query_user = Query(cls_user)
     query_user.less_than('last_post_time', cur_time - 5)
     query_user.equal_to('status', 'active')
-    print query_user.count()
     user_results = query_user.find()
     # cls_page = Object.extend('UserInPage')
     # query_page = Query(cls_page)
