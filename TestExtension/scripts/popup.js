@@ -5,6 +5,7 @@ var user_id = '';
 var isAcitive = false;
 var cur_user_num = 0;
 console.log('popup');
+setTimeout('$("#bullet_content").focus()', 2000);
 chrome.tabs.query({active: true}, function (tabs) {
     current_url = tabs[0].url;
     current_title = tabs[0].title;
@@ -27,6 +28,7 @@ chrome.tabs.query({active: true}, function (tabs) {
             setSwitchStatus('btn_switch', isAcitive);
         }
         $("#cur_status").text('是否激活:' + isAcitive);
+        $("#bullet_content").focus()
     });
 });
 function setSwitchStatus(id, isStatusActive) {
@@ -42,7 +44,7 @@ $("#btn_switch").bootstrapSwitch({
     onText: "激活",
     offText: "未激活",
     onColor: "success",
-    indeterminate:"true",
+    indeterminate: "true",
     onSwitchChange: function (event, state) {
         //alert($(this).prop("checked"));
         if ($(this).prop("checked")) {
@@ -125,6 +127,7 @@ $("#btn_shoot").click(function () {
     }
 });
 
+
 $("#bullet_content").keydown(function (e) {
     var curKey = e.which;
     if (curKey == 13) {
@@ -132,6 +135,7 @@ $("#bullet_content").keydown(function (e) {
         return false;
     }
 });
+
 //document.getElementById("btn_start").onclick = function () {
 //    console.log(123123);
 //    alert('123asdfasdf');
