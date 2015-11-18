@@ -19,6 +19,11 @@ def test_demo():
     return render_template('TestInLocal.html')
 
 
+@app.route('/google7b8fcf02d6c8ed46.html', methods=['GET'])
+def google_verify():
+    return render_template('google7b8fcf02d6c8ed46.html')
+
+
 @app.route("/getData", methods=['POST'])
 def get_data():
     if request.form[STR_USER_ID] == '':
