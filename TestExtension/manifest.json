@@ -8,6 +8,11 @@
     "default_popup": "popup.html",
     "default_title": "点我！"
   },
+  "icons": {
+    "16": "/imgs/icon.png",
+    "48": "/imgs/icon.png",
+    "128": "/imgs/icon.png"
+  },
   "content_scripts": [
     {
       "matches": [

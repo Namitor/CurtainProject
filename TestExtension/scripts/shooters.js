@@ -53,7 +53,7 @@ function get_bullets(page_url, user_id) {
             var jsonroot = JSON.parse(data);
             if (jsonroot.code == 0) {
                 //console.log(jsonroot);
-                machine_gun(jsonroot.contents, 8000);
+                machine_gun(jsonroot.contents, 12000);
             }
         }
     );
