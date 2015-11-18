@@ -1,7 +1,7 @@
 import hashlib
 import json
 import time
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask.ext.cors import CORS
 import leancloud_manager
 
@@ -16,7 +16,7 @@ STR_USER_ID = 'user_id'
 
 @app.route('/', methods=['GET'])
 def test_demo():
-    return render_template('TestInLocal.html')
+    return render_template('homepage.html')
 
 
 @app.route('/google7b8fcf02d6c8ed46.html', methods=['GET'])
@@ -75,6 +75,11 @@ def log_out():
 def get_user_num():
     num = leancloud_manager.get_user_num(request.form[STR_PAGE_URL])
     return json.dumps({'user_num': num})
+
+
+@app.route('/download', methods=['GET'])
+def get_extension_file():
+    return redirect(url_for('static', filename='downloads/Shooooty.crx'))
 
 
 if __name__ == '__main__':
