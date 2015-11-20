@@ -31,13 +31,6 @@ function start_shooting(page_url, sendResponse_handler) {
 }
 function stop_shooting(page_url, u_id, sendResponse_handler) {
     clearInterval(shooter);
-    //$.post('http://project-curtain.avosapps.com/logout', {
-    //        page_url: page_url,
-    //        user_id: u_id
-    //    },
-    //    function (data, status) {
-    //    });
-    //console.log('logout' + status);
     isActive = false;
     user_id = '';
     sendResponse_handler({result: user_id, status: isActive})
@@ -45,12 +38,6 @@ function stop_shooting(page_url, u_id, sendResponse_handler) {
 
 
 function get_status(page_url, sendResponse_handler) {//popup每次被点开后，用于获取状态
-    //$.post("http://project-curtain.avosapps.com/init_user", {page_url: page_url}, function (data) {
-    //    var jsonroot = JSON.parse(data);
-    //    user_id = jsonroot['user_id'];
-    //    console.log(user_id);
-    //    //sendResponse({result: user_id});
-    //});
     $.post('http://project-curtain.avosapps.com/getUserNum', {
             page_url: page_url
         },

@@ -136,8 +136,3 @@ $("#bullet_content").keydown(function (e) {
     }
 });
 
-//document.getElementById("btn_start").onclick = function () {
-//    console.log(123123);
-//    alert('123asdfasdf');
-//};
-//})
