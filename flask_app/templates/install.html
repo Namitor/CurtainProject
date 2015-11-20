@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Install</title>
+    <link rel="chrome-webstore-item"
+      href="https://chrome.google.com/webstore/detail/aifdchekbmlmleaaahcdiichijehnmee">
+    <script>
+        function install() {
+            chrome.webstore.install("https://chrome.google.com/webstore/detail/aifdchekbmlmleaaahcdiichijehnmee",
+                    function(){
+                        alert("安装成功");
+                    },
+                    function(){
+                        alert("安装失败");
+                    });
+        }
+    </script>
+</head>
+<body>
+
+<button onclick="install()" id="install-button">Add to Chrome</button>
+  <script>
+  if (chrome.app.isInstalled) {
+    document.getElementById('install-button').display = 'none';
+  }
+  </script>
+</body>
+</html>
