@@ -1,6 +1,5 @@
 # coding:utf-8
 import threading
-
 import leancloud
 import time
 from leancloud import Object
@@ -34,19 +33,19 @@ def add_data_in_dict(page, timestamp, content, user_id):
 
 
 def update_temp_user_info(page_url, user_id, cur_time):
+    ret = cur_time
     mutex_user.acquire()
     if user_id not in temp_user_dict.keys():
         temp_list = list()
         temp_list.append(cur_time)
         temp_list.append(page_url)
         temp_user_dict[user_id] = temp_list
-        mutex_user.release()
-        return cur_time
     else:
         last_t = temp_user_dict[user_id][0]
         temp_user_dict[user_id][0] = cur_time
-        mutex_user.release()
-        return last_t
+        ret = last_t
+    mutex_user.release()
+    return ret
 
 
 def query_data_from_dict(page, user_id, cur_time):
@@ -54,14 +53,13 @@ def query_data_from_dict(page, user_id, cur_time):
     # last_post_time = update_user_info(page, user_id, cur_time)
     last_post_time = update_temp_user_info(page, user_id, cur_time)
     data = list()
-    if page not in temp_data_dict.keys():
-        return data
-    page_dict = temp_data_dict[page]
-    for timestamp in page_dict:
-        if last_post_time < timestamp <= cur_time:
-            time_dict = page_dict[timestamp]
-            for user_id in time_dict:
-                data.append({'content': time_dict[user_id], 'timestamp': timestamp})
+    if page in temp_data_dict.keys():
+        page_dict = temp_data_dict[page]
+        for timestamp in page_dict:
+            if last_post_time < timestamp <= cur_time:
+                time_dict = page_dict[timestamp]
+                for user_id in time_dict:
+                    data.append({'content': time_dict[user_id], 'timestamp': timestamp})
     mutex_data.release()
     return data
 
