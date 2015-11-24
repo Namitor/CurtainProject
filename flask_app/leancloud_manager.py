@@ -34,7 +34,7 @@ def add_data_in_dict(page, timestamp, content, user_id):
 
 
 def update_temp_user_info(page_url, user_id, cur_time):
-    mutex_user.require()
+    mutex_user.acquire()
     if user_id not in temp_user_dict.keys():
         temp_list = list()
         temp_list.append(cur_time)
