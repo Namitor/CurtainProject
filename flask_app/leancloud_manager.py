@@ -40,12 +40,13 @@ def update_temp_user_info(page_url, user_id, cur_time):
         temp_list.append(cur_time)
         temp_list.append(page_url)
         temp_user_dict[user_id] = temp_list
+        mutex_user.release()
         return cur_time
     else:
         last_t = temp_user_dict[user_id][0]
         temp_user_dict[user_id][0] = cur_time
+        mutex_user.release()
         return last_t
-    mutex_user.release()
 
 
 def query_data_from_dict(page, user_id, cur_time):
