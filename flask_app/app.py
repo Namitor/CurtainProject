@@ -17,11 +17,17 @@ STR_USER_ID = 'user_id'
 @app.route('/', methods=['GET'])
 def test_demo():
     return render_template('homepage.html')
+    # return render_template('TestInLocal.html')
 
 
 @app.route('/google7b8fcf02d6c8ed46.html', methods=['GET'])
 def google_verify():
     return render_template('google7b8fcf02d6c8ed46.html')
+
+
+@app.route('/testPage', methods=['GET'])
+def test_page():
+    return render_template('TestInLocal.html', )
 
 
 @app.route("/getData", methods=['POST'])

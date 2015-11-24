@@ -1,4 +1,6 @@
 # coding:utf-8
+import threading
+
 import leancloud
 import time
 from leancloud import Object
@@ -7,6 +9,9 @@ from requests.packages import urllib3
 
 temp_data_dict = dict()
 temp_user_dict = dict()
+
+mutex_data = threading.Lock()
+mutex_user = threading.Lock()
 
 
 def leancloud_init():
@@ -19,14 +24,17 @@ def leancloud_init():
 
 
 def add_data_in_dict(page, timestamp, content, user_id):
+    mutex_data.acquire()
     if page not in temp_data_dict.keys():
         temp_data_dict[page] = dict()
     if timestamp not in temp_data_dict[page].keys():
         temp_data_dict[page][timestamp] = dict()
     temp_data_dict[page][timestamp][user_id] = content
+    mutex_data.release()
 
 
 def update_temp_user_info(page_url, user_id, cur_time):
+    mutex_user.require()
     if user_id not in temp_user_dict.keys():
         temp_list = list()
         temp_list.append(cur_time)
@@ -37,9 +45,11 @@ def update_temp_user_info(page_url, user_id, cur_time):
         last_t = temp_user_dict[user_id][0]
         temp_user_dict[user_id][0] = cur_time
         return last_t
+    mutex_user.release()
 
 
 def query_data_from_dict(page, user_id, cur_time):
+    mutex_data.acquire()
     # last_post_time = update_user_info(page, user_id, cur_time)
     last_post_time = update_temp_user_info(page, user_id, cur_time)
     data = list()
@@ -51,12 +61,14 @@ def query_data_from_dict(page, user_id, cur_time):
             time_dict = page_dict[timestamp]
             for user_id in time_dict:
                 data.append({'content': time_dict[user_id], 'timestamp': timestamp})
+    mutex_data.release()
     return data
 
 
 def update_temp_data():
     temp_time_list = list()
     temp_page_list = list()
+    mutex_data.acquire()
     cur_time = time.time()
     for page in temp_data_dict:
         page_dict = temp_data_dict[page]
@@ -73,12 +85,14 @@ def update_temp_data():
             temp_page_list.append(page)
     for page in temp_page_list:
         del temp_data_dict[page]
+    mutex_data.release()
 
 
 def update_temp_user():
-    cur_time = time.time()
     temp_list = list()
     cls_user = Object.extend('UserInfo')
+    mutex_user.acquire()
+    cur_time = time.time()
     for user_id in temp_user_dict:
         if temp_user_dict[user_id][0] < cur_time - 5:
             obj_user = cls_user()
@@ -91,6 +105,7 @@ def update_temp_user():
             temp_list.append(user_id)
     for user_id in temp_list:
         del temp_user_dict[user_id]
+    mutex_user.release()
 
 
 def add_data(page, time, content, user_id):
@@ -230,9 +245,11 @@ def get_user_num(page_url):
     # query_user.equal_to('page_url', page_url)
     # query_user.equal_to('status', 'active')
     i = 0
+    mutex_user.acquire()
     for user_id in temp_user_dict:
         if temp_user_dict[user_id][1] == page_url:
             i += 1
+    mutex_user.release()
     return i
 
 
