@@ -88,6 +88,12 @@ def get_extension_file():
     return redirect(url_for('static', filename='downloads/Shooooty.crx'))
 
 
+@app.route('/getAllPages', methods=['POST'])
+def get_all_pages():
+    data = leancloud_manager.get_all_pages()
+    return json.dumps(data)
+
+
 @app.route('/install', methods=['GET'])
 def install_extension():
     return render_template('install.html')

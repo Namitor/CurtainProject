@@ -56,4 +56,12 @@ $(document).ready(function () {
                 console.log(jsonroot.user_num)
             });
     });
+    $('#getAllPages').click(function(){
+        $.post('/getAllPages',{
+            options:''
+        },function(data, status){
+            var jsonroot = JSON.parse(data)
+            console.log(jsonroot)
+        });
+    });
 });

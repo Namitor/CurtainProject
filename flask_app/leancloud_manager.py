@@ -290,3 +290,16 @@ def update_user_status():
         #     page_result.set('user_num', page_result.get('user_num') - 1)
         #     page_result.set('user_data', page_dict)
         # page_result.save()
+
+
+def get_all_pages():
+    data = list()
+    query_pages = Query(Object.extend('UserInPage'))
+    query_pages.greater_than('user_num', 0)
+    results = query_pages.find()
+    for result in results:
+        temp_dict = dict()
+        temp_dict['page_url'] = result.get('page_url')
+        temp_dict['user_num'] = result.get('user_num')
+        data.append(temp_dict)
+    return data
