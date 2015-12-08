@@ -21,5 +21,5 @@ def user_timer():
 
 @engine.define
 def data_timer():
-    print 'updata data.' + str(time.time())
+    print 'update data.' + str(time.time())
     leancloud_manager.update_temp_data()

@@ -40,6 +40,7 @@ def update_temp_user_info(page_url, user_id, cur_time):
         temp_list.append(cur_time)
         temp_list.append(page_url)
         temp_user_dict[user_id] = temp_list
+        update_page_info(page_url, user_id)
     else:
         last_t = temp_user_dict[user_id][0]
         temp_user_dict[user_id][0] = cur_time
@@ -100,6 +101,7 @@ def update_temp_user():
             obj_user.set('page_url', temp_user_dict[user_id][1])
             obj_user.set('status', 'inactive')
             obj_user.save()
+            delete_page_user(temp_user_dict[user_id][1], user_id)
             print 'update ' + str(user_id)
             temp_list.append(user_id)
     for user_id in temp_list:
@@ -127,7 +129,7 @@ def add_data(page, time, content, user_id):
 
 def query_data(page, user_id, cur_time):
     '''
-    查询弹幕
+    查询弹幕，暂未使用
     :param page:
     :param user_id:
     :param cur_time:
@@ -149,7 +151,7 @@ def query_data(page, user_id, cur_time):
 
 def update_user_info(page_url, user_id, cur_time):
     '''
-    更新user数据，并返回上一次更新的时间
+    更新user数据，并返回上一次更新的时间，暂未使用
     :param page_url:
     :param user_id:
     :param cur_time:
@@ -181,7 +183,7 @@ def update_user_info(page_url, user_id, cur_time):
 
 def update_page_info(page_url, user_id):
     '''
-    更新页面数据，暂不使用
+    更新页面数据
     :param page_url:
     :param user_id:
     :return:
@@ -209,7 +211,7 @@ def update_page_info(page_url, user_id):
 
 def delete_page_user(page_url, user_id):
     '''
-    删除page下某个用户，暂未使用
+    删除page下某个用户
     :param page_url:
     :param user_id:
     :return:
@@ -219,7 +221,7 @@ def delete_page_user(page_url, user_id):
     query_page.equal_to('page_url', page_url)
     result = query_page.first()
     user_dict = result.get('user_data')
-    del user_dict[user_id]
+    user_dict[user_id] = 'inactive'
     result.set('user_data', user_dict)
     result.set('user_num', result.get('user_num') - 1)
     result.save()
@@ -231,25 +233,14 @@ def get_user_num(page_url):
     :param page_url:
     :return: 当前页面用户数
     '''
-    # cls_page = Object.extend('UserInPage')
-    # query_page = Query(cls_page)
-    # query_page.equal_to('page_url', page_url)
-    # try:
-    #     result = query_page.first()
-    # except Exception, e:
-    #     return 0
-    # return result.get('user_num')
-    # cls_user = Object.extend('UserInfo')
-    # query_user = Query(cls_user)
-    # query_user.equal_to('page_url', page_url)
-    # query_user.equal_to('status', 'active')
-    i = 0
-    mutex_user.acquire()
-    for user_id in temp_user_dict:
-        if temp_user_dict[user_id][1] == page_url:
-            i += 1
-    mutex_user.release()
-    return i
+    cls_page = Object.extend('UserInPage')
+    query_page = Query(cls_page)
+    query_page.equal_to('page_url', page_url)
+    try:
+        result = query_page.first()
+    except Exception, e:
+        return 0
+    return result.get('user_num')
 
 
 def refresh_page_info(page_url):
@@ -273,7 +264,7 @@ def refresh_page_info(page_url):
 
 def update_user_status():
     '''
-    定时刷新用户数据，标记已过时的用户
+    定时刷新用户数据，标记已过时的用户，暂未使用
     :return:
     '''
     cur_time = time.time()
