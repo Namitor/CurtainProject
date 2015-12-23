@@ -13,6 +13,8 @@
     <link rel="stylesheet" type="text/css" href="../static/css/flat-ui.min.css">
     <link rel="stylesheet" type="text/css" href="../static/css/jquery.dataTables.min.css">
 
+    <link rel="shortcut icon" href="../static/icon.png"/>
+
     <script>
         var tableObj;
         $.post("http://project-curtain.avosapps.com/getAllPages", {options: ""}, function (data) {
@@ -76,7 +78,8 @@
             </p>
 
             <p>
-                <a class="btn btn-primary btn-large" href="http://namitor.github.io/Shooooty/">Shooooty主页 »</a>
+                <a class="btn btn-primary btn-large" onclick="openURL('http://namitor.github.io/Shooooty') ">Shooooty主页
+                    »</a>
             </p>
         </div>
         <div class="col-md-2">
