@@ -310,3 +310,21 @@ def get_all_pages():
         temp_dict['user_num'] = result.get('user_num')
         data.append(temp_dict)
     return data
+
+
+def save_feedback(email, content):
+    """
+    存储用户的反馈到leancloud上
+    :param email:
+    :param content:
+    :return:
+    """
+    try:
+        feedback = Object.extend('UserFeedbacks')()
+        feedback.set('email', email)
+        feedback.set('content', content)
+        feedback.save()
+        return True
+    except Exception, e:
+        print e
+        return False

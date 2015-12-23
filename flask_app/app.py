@@ -99,6 +99,17 @@ def install_extension():
     return render_template('install.html')
 
 
+@app.route('/feedback', methods=['POST'])
+def feedback():
+    email = request.form['email']
+    content = request.form['content']
+    is_ok = leancloud_manager.save_feedback(email, content)
+    if is_ok:
+        return json.dumps({'code': 0, 'msg': is_ok})
+    else:
+        return json.dumps({'code': 1, 'msg': is_ok})
+
+
 if __name__ == '__main__':
     leancloud_manager.leancloud_init()
     app.run('0.0.0.0', port=2222, debug=True)
