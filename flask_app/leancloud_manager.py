@@ -6,7 +6,14 @@ from leancloud import Object
 from leancloud import Query
 from requests.packages import urllib3
 
+# temp_data_dict:
+#     page:
+#         timestamp:
+#             user_id:content
 temp_data_dict = dict()
+
+# temp_user_dict:
+#     user_id:[last_post_time, page_url]
 temp_user_dict = dict()
 
 mutex_data = threading.Lock()
