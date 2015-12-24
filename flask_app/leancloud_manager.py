@@ -19,7 +19,7 @@ temp_user_dict = dict()
 mutex_data = threading.Lock()
 mutex_user = threading.Lock()
 
-TIMEOUT = 10000
+TIMEOUT = 10
 
 
 def leancloud_init():
@@ -75,11 +75,11 @@ def query_data_from_dict(page, user_id, cur_time):
 
 
 def update_temp_data():
-    temp_time_list = list()
     temp_page_list = list()
     if mutex_data.acquire(TIMEOUT):
         cur_time = time.time()
         for page in temp_data_dict:
+            temp_time_list = list()
             page_dict = temp_data_dict[page]
             for timestamp in page_dict:
                 if timestamp < cur_time - 5:
