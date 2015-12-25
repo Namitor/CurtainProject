@@ -1,4 +1,4 @@
 .avoscloud/
 .idea/
 build/
-*.pyc.avoscloud/
+*.pyc

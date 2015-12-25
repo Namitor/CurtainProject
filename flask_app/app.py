@@ -73,7 +73,7 @@ def bullet_post():
 def log_out():
     # leancloud_manager.delete_page_user(request.form[STR_PAGE_URL], request.form[STR_USER_ID])
     # leancloud_manager.update_user_status()
-    # leancloud_manager.update_temp_data()
+    leancloud_manager.update_temp_data()
     leancloud_manager.update_temp_user()
     return 'success'
 
