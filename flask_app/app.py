@@ -49,6 +49,7 @@ def init_user():
     cur_time = time.time()
     page_url = request.form[STR_PAGE_URL]
     m = hashlib.md5()
+    print 'init '+str(page_url)+' '+str(cur_time)
     m.update(page_url + str(request.remote_addr) + str(cur_time))
     md5_id = m.hexdigest()
     # leancloud_manager.update_page_info(page_url, md5_id)

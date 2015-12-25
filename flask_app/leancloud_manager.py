@@ -19,8 +19,6 @@ temp_user_dict = dict()
 mutex_data = threading.Lock()
 mutex_user = threading.Lock()
 
-TIMEOUT = 10
-
 
 def leancloud_init():
     '''
@@ -32,90 +30,94 @@ def leancloud_init():
 
 
 def add_data_in_dict(page, timestamp, content, user_id):
-    if mutex_data.acquire(TIMEOUT):
-        if page not in temp_data_dict.keys():
-            temp_data_dict[page] = dict()
-        if timestamp not in temp_data_dict[page].keys():
-            temp_data_dict[page][timestamp] = dict()
-        temp_data_dict[page][timestamp][user_id] = content
-        mutex_data.release()
+    mutex_data.acquire()
+    if page not in temp_data_dict.keys():
+        temp_data_dict[page] = dict()
+    if timestamp not in temp_data_dict[page].keys():
+        temp_data_dict[page][timestamp] = dict()
+    temp_data_dict[page][timestamp][user_id] = content
+    mutex_data.release()
 
 
 def update_temp_user_info(page_url, user_id, cur_time):
     ret = cur_time
-    if mutex_user.acquire(TIMEOUT):
-        if user_id not in temp_user_dict.keys():
-            temp_list = list()
-            temp_list.append(cur_time)
-            temp_list.append(page_url)
-            temp_user_dict[user_id] = temp_list
-            update_page_info(page_url, user_id)
-        else:
-            last_t = temp_user_dict[user_id][0]
-            temp_user_dict[user_id][0] = cur_time
-            ret = last_t
-        mutex_user.release()
+    mutex_user.acquire()
+    print 'init'
+    if user_id not in temp_user_dict.keys():
+        temp_list = list()
+        temp_list.append(cur_time)
+        temp_list.append(page_url)
+        temp_user_dict[user_id] = temp_list
+        update_page_info(page_url, user_id)
+    else:
+        last_t = temp_user_dict[user_id][0]
+        temp_user_dict[user_id][0] = cur_time
+        ret = last_t
+    print temp_user_dict
+    mutex_user.release()
     return ret
 
 
 def query_data_from_dict(page, user_id, cur_time):
     data = list()
-    if mutex_data.acquire(TIMEOUT):
-        # last_post_time = update_user_info(page, user_id, cur_time)
-        last_post_time = update_temp_user_info(page, user_id, cur_time)
-        if page in temp_data_dict.keys():
-            page_dict = temp_data_dict[page]
-            for timestamp in page_dict:
-                if last_post_time < timestamp <= cur_time:
-                    time_dict = page_dict[timestamp]
-                    for user_id in time_dict:
-                        data.append({'content': time_dict[user_id], 'timestamp': timestamp})
-        mutex_data.release()
+    mutex_data.acquire()
+    # last_post_time = update_user_info(page, user_id, cur_time)
+    last_post_time = update_temp_user_info(page, user_id, cur_time)
+    if page in temp_data_dict.keys():
+        page_dict = temp_data_dict[page]
+        for timestamp in page_dict:
+            if last_post_time < timestamp <= cur_time:
+                time_dict = page_dict[timestamp]
+                for user_id in time_dict:
+                    data.append({'content': time_dict[user_id], 'timestamp': timestamp})
+    mutex_data.release()
     return data
 
 
 def update_temp_data():
     temp_page_list = list()
-    if mutex_data.acquire(TIMEOUT):
-        cur_time = time.time()
-        for page in temp_data_dict:
-            temp_time_list = list()
-            page_dict = temp_data_dict[page]
-            for timestamp in page_dict:
-                if timestamp < cur_time - 5:
-                    time_dict = page_dict[timestamp]
-                    for user_id in time_dict:
-                        add_data(page, timestamp, time_dict[user_id], user_id)
-                        print 'add ' + str(timestamp)
-                    temp_time_list.append(timestamp)
-            for timestamp in temp_time_list:
-                del page_dict[timestamp]
-            if len(page_dict) == 0:
-                temp_page_list.append(page)
-        for page in temp_page_list:
-            del temp_data_dict[page]
-        mutex_data.release()
+    mutex_data.acquire()
+    cur_time = time.time()
+    for page in temp_data_dict:
+        temp_time_list = list()
+        page_dict = temp_data_dict[page]
+        for timestamp in page_dict:
+            if timestamp < cur_time - 5:
+                time_dict = page_dict[timestamp]
+                for user_id in time_dict:
+                    add_data(page, timestamp, time_dict[user_id], user_id)
+                    print 'add ' + str(timestamp)
+                temp_time_list.append(timestamp)
+        for timestamp in temp_time_list:
+            del page_dict[timestamp]
+        if len(page_dict) == 0:
+            temp_page_list.append(page)
+    for page in temp_page_list:
+        del temp_data_dict[page]
+    mutex_data.release()
 
 
 def update_temp_user():
     temp_list = list()
     cls_user = Object.extend('UserInfo')
-    if mutex_user.acquire(TIMEOUT):
-        cur_time = time.time()
-        for user_id in temp_user_dict:
-            if temp_user_dict[user_id][0] < cur_time - 5:
-                obj_user = cls_user()
-                obj_user.set('user_id', user_id)
-                obj_user.set('last_post_time', temp_user_dict[user_id][0])
-                obj_user.set('page_url', temp_user_dict[user_id][1])
-                obj_user.set('status', 'inactive')
-                obj_user.save()
-                delete_page_user(temp_user_dict[user_id][1], user_id)
-                print 'update ' + str(user_id)
-                temp_list.append(user_id)
-        for user_id in temp_list:
-            del temp_user_dict[user_id]
-        mutex_user.release()
+    mutex_user.acquire()
+    print 'update'
+    print temp_user_dict
+    cur_time = time.time()
+    for user_id in temp_user_dict:
+        if temp_user_dict[user_id][0] < cur_time - 5:
+            obj_user = cls_user()
+            obj_user.set('user_id', user_id)
+            obj_user.set('last_post_time', temp_user_dict[user_id][0])
+            obj_user.set('page_url', temp_user_dict[user_id][1])
+            obj_user.set('status', 'inactive')
+            obj_user.save()
+            delete_page_user(temp_user_dict[user_id][1], user_id)
+            print 'update ' + str(user_id)
+            temp_list.append(user_id)
+    for user_id in temp_list:
+        del temp_user_dict[user_id]
+    mutex_user.release()
 
 
 def add_data(page, time, content, user_id):
