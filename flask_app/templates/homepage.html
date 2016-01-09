@@ -17,7 +17,13 @@
 
     <script>
         var tableObj;
-        $.post("http://project-curtain.avosapps.com/getAllPages", {options: ""}, function (data) {
+        var targetUrl;
+        if (window.location.protocol === 'https:') {
+            targetUrl = 'https://project-curtain.avosapps.com/getAllPages';
+        } else {
+            targetUrl = 'http://project-curtain.avosapps.com/getAllPages';
+        }
+        $.post(targetUrl, {options: ""}, function (data) {
             var jsonroot = JSON.parse(data);
             console.log(jsonroot);
             //处理data
