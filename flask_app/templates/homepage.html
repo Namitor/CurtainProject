@@ -39,12 +39,12 @@
 //                        console.log('aData=' + aData)
 //                        console.log('iDataIndex=' + iDataIndex)
                         $('td:eq(' + (2) + ')', nRow)
-                                .append("<button style ='float:left' class='btn btn-info' onclick=openURL('" + aData[0] + "')>加入频道</button>");
+                                .append("<button style ='float:left' class='btn btn-info' onclick=openURL('" + aData[0] + "')>Add</button>");
                     },
                     "columns": [
                         {"title": "URL"},
-                        {"title": "人数"},
-                        {"title": "操作"}
+                        {"title": "User count"},
+                        {"title": "Action"}
                     ]
                 });
                 if (jsonroot.length > 0) {
@@ -76,15 +76,13 @@
         </div>
         <div class="col-md-8">
             <h1>
-                Shooooty热门频道
+                Shooooty hot pages
             </h1>
 
             <p>
-                本页面展示了当前的热门频道以及相应的人数，如果表格为空，则表示当前没有任何用户观看，快去开辟新大陆吧！
-            </p>
-
+                This page shows the current hot pages and the corresponding user count, if the table is empty, it means that there is no user this moment, let's open up a new continent! </p>
             <p>
-                <a class="btn btn-primary btn-large" onclick="openURL('http://namitor.github.io/Shooooty') ">Shooooty主页
+                <a class="btn btn-primary btn-large" onclick="openURL('http://namitor.github.io/Shooooty') ">Shooooty home page
                     »</a>
             </p>
         </div>
@@ -97,7 +95,7 @@
         </div>
         <div class="col-md-8">
             <h3>
-                当前频道人数列表
+                Page-user count list
             </h3>
             <table class="table" id="hot_channel">
             </table>
